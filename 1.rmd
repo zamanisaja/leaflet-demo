@@ -68,7 +68,7 @@ names(df) <- c("name", "latitude", "longitude", "cases")
 head(df)
 ```
 
-Now I'm going to draw a map of italy with total number of new cases in each region of italy.
+Now I'm going to draw a map of italy with total number of new cases in each region of italy. This data generated on: `r daate()`
 
 ```{r plot}
 df %>%
