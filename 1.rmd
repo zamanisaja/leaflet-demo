@@ -68,7 +68,7 @@ names(df) <- c("name", "latitude", "longitude", "cases")
 head(df)
 ```
 
-Now I'm going to draw a map of italy with total number of new cases in each region of italy. This data generated on: `r daate()`
+Now I'm going to draw a map of italy with total number of new cases in each region of italy.
 
 ```{r plot}
 df %>%
@@ -76,5 +76,6 @@ df %>%
     addTiles() %>%
     addCircles(weight = 1, radius = df$cases / 100, color = "red", popup = df$name)
 ```
+This data generated on: `r date()`
 
 [1]: `r repo_url` "Health Ministery"
