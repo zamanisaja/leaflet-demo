@@ -12,6 +12,8 @@ knitr::opts_chunk$set(message = FALSE)
 knitr::opts_knit$set(cache = TRUE)
 knitr::opts_chunk$set(fig.path = "./figure/")
 knitr::opts_chunk$set(fig.align = "center")
+
+repo_url <- "https://github.com/pcm-dpc/COVID-19"
 ```
 
 
@@ -29,15 +31,7 @@ library("leaflet")
 For this demo I'll be using this [github][1] repository.
 
 ```{r echo=FALSE}
-repo_url <- "https://github.com/pcm-dpc/COVID-19"
 if (!(dir.exists("./data"))) {
-    # download.file("https://codeload.github.com/pcm-dpc/COVID-19/zip/refs/heads/master", destfile = "COVID-19.zip")
-    # unzip("COVID-19.zip")
-    system(paste(
-        "git", "pull",
-        repo_url,
-        sep = " "
-    ))
     dir.create("./data/")
     download.file(
         # url = paste(repo_url, "/blob/master/", "dati-regioni/", "dpc-covid19-ita-regioni.csv", sep = "/"),
@@ -45,14 +39,42 @@ if (!(dir.exists("./data"))) {
         destfile = "./data/latest.csv", overwrite = TRUE
     )
 }
+if (!(dir.exists("./COVID-19/"))) {
+    system(paste(
+        "git", "clone",
+        repo_url,
+        sep = " "
+    ))
+} else {
+    setwd("COVID-19")
+    system(paste(
+        "git", "pull",
+        "origin", "master",
+        sep = " "
+    ))
+    setwd("../")
+}
 ```
 
-Now lets
+Now lets read the data.
+
+```{r loadData}
+df <- read_csv("./data/latest.csv")
+df <- df %>%
+    select(c("denominazione_regione", "lat", "long", "totale_casi"))
 
 
+names(df) <- c("name", "latitude", "longitude", "cases")
+head(df)
+```
 
+Now I'm going to draw a map of italy with total number of new cases in each region of italy.
 
-
-
+```{r plot}
+df %>%
+    leaflet() %>%
+    addTiles() %>%
+    addCircles(weight = 1, radius = df$cases / 100, color = "red", popup = df$name)
+```
 
 [1]: `r repo_url` "Health Ministery"
