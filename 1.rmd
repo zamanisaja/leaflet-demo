@@ -1,0 +1,45 @@
+---
+title: "Covid map in Fars - Iran"
+author: "Saja"
+output: 
+  html_document:
+    keep_md: true
+---
+```{r include=FALSE}
+# some global options
+knitr::opts_chunk$set(warning = FALSE)
+knitr::opts_chunk$set(message = FALSE)
+knitr::opts_knit$set(cache = TRUE)
+knitr::opts_chunk$set(fig.path = "./figure/")
+knitr::opts_chunk$set(fig.align = "center")
+```
+
+
+## Introduction
+This is a demo document to create a map of counts of cvoid patients in Italy, using leaflet.
+
+
+```{r }
+library("leaflet")
+```
+
+### Getting the data
+
+For this demo I'll be using this [github][1] repository.
+
+```{r }
+if (!(dir.exists("./data"))) {
+    # download.file("https://codeload.github.com/pcm-dpc/COVID-19/zip/refs/heads/master", destfile = "COVID-19.zip")
+    # unzip("COVID-19.zip")
+
+    dir.create("./data/")
+
+    download.file("https://github.com/pcm-dpc/COVID-19/blob/master/dati-regioni/dpc-covid19-ita-regioni.csv", destfile = "./data/latest.csv")
+}
+```
+
+
+
+
+
+[1]: https://github.com/pcm-dpc/COVID-19 "Health Ministery"
